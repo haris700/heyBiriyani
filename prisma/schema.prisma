@@ -1,0 +1,80 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model User {
+  id               Int           @id @default(autoincrement())
+  uid              String        @unique @default(uuid())
+  name             String?       @db.VarChar(255)
+  createdDt        DateTime      @default(now()) @map("created_dt")
+  updatedDt        DateTime      @updatedAt @map("updated_dt")
+  email            String        @unique @map("email") @db.VarChar(255)
+  password         String?       @unique
+  isVerified       Boolean       @default(false)
+  verificationInfo Verification?
+  lastLogin        DateTime      @default(now()) @map("last_login")
+  orders           Order[]
+
+  @@map("user")
+}
+
+model Verification {
+  id         Int      @id @default(autoincrement())
+  uid        String   @unique @default(uuid())
+  otp        String
+  expiration DateTime
+  userId     Int?     @unique @map("user_id")
+  user       User?    @relation(fields: [userId], references: [id])
+
+  @@map("verification")
+}
+
+model Rating {
+  id        Int      @id @default(autoincrement())
+  uid       String   @unique @default(uuid())
+  rating    Float
+  createdDt DateTime @default(now()) @map("created_dt")
+  updatedDt DateTime @updatedAt @map("updated_dt")
+  orderId   Int      @unique @map("order_id")
+  order     Order    @relation(fields: [orderId], references: [id])
+
+  @@map("rating")
+}
+
+model Order {
+  id         Int     @id @default(autoincrement())
+  uid        String  @unique @default(uuid())
+  itemId     Int     @map("item_id")
+  userId     Int     @map("user_id")
+  quantity   Int     @map("quantity")
+  unitPrice  Int     @map("unit_price")
+  totalPrice Float   @map("total_price")
+  status     String
+  name       String
+  user       User    @relation(fields: [userId], references: [id]) 
+  item       Item    @relation(fields: [itemId], references: [id])
+  rating     Rating?
+
+  @@map("order")
+}
+
+model Item {
+  id          Int      @id @default(autoincrement())
+  uid         String   @unique @default(uuid())
+  name        String   @db.VarChar(255)
+  price       Float
+  ingredients String[]
+  orders      Order[]
+
+  @@map("item")
+}
