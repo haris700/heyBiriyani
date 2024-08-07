@@ -56,8 +56,6 @@ const Login = () => {
       setLoading(true);
       const res = await axios.post("/api/auth/signin", form);
 
-      console.log(res, "ressss");
-
       if (res.status == 200) {
         localStorage.setItem("token", res?.data.token);
         router.push("/");

@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { UserContextProvider } from "./context/userContext";
 import NavigationMenuBar from "./components/navBar";
+import { CartProvider } from "./context/cartContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,12 +19,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <script src="https://checkout.razorpay.com/v1/checkout.js" />
+        <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+      </head>
       <UserContextProvider>
-        <body className={inter.className}>
-          <NavigationMenuBar />
+        <CartProvider>
+          <body className={inter.className}>
+            <NavigationMenuBar />
 
-          {children}
-        </body>
+            {children}
+          </body>
+        </CartProvider>
       </UserContextProvider>
     </html>
   );

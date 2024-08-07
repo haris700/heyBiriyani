@@ -34,8 +34,6 @@ async function main() {
     data: items,
     skipDuplicates: true, // Skip items that already exist to avoid errors
   });
-
-  console.log("Seeded the database with initial items");
 }
 
 main()

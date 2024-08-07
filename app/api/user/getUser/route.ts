@@ -4,8 +4,6 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(req: NextRequest) {
   const uid = req.nextUrl.searchParams.get("uid");
 
-  console.log(uid, "uid");
-
   if (!uid) {
     return NextResponse.json(
       { message: "Please enter valid inputs" },
@@ -15,7 +13,6 @@ export async function GET(req: NextRequest) {
 
   try {
     const user = await findUserByUid(uid);
-    console.log(user, "user");
 
     return NextResponse.json({ message: "This is the current user:", user });
   } catch (error) {

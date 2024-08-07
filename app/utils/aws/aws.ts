@@ -5,7 +5,6 @@ AWS.config.credentials = {
   secretAccessKey: process.env.AWS_SECRET_KEY as string,
 };
 AWS.config.region = "ap-south-1";
-console.log(process.env.AWS_ACCESS_KEY, "kooi");
 
 const ses = new AWS.SES();
 
@@ -31,13 +30,7 @@ export const sendVerificationEmail = async (
   };
 
   try {
-    console.log(ses, "hiii ses");
-
     const result = await ses.sendEmail(params).promise();
-
-    console.log(params, "params");
-
-    console.log(result, "result");
 
     return result;
   } catch (error) {

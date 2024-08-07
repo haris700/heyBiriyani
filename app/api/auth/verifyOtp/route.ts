@@ -11,8 +11,6 @@ const verifySchema = z.object({
 });
 
 export async function POST(req: NextRequest, res: NextResponse) {
-  console.log(req.method, "reqqqqqqqq");
-
   if (req.method !== "POST") {
     return NextResponse.json(
       { message: "Method not allowed" },
@@ -22,13 +20,9 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
   const body = await req.json();
 
-  console.log(body, "bodyyyyy");
-
   const validation = verifySchema.safeParse(body);
 
   if (!validation.success) {
-    console.log("koooi");
-
     return NextResponse.json(validation.error.errors, { status: 400 });
   }
 

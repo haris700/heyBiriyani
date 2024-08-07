@@ -12,9 +12,7 @@ const HomeComponent = () => {
   const container = useRef<HTMLDivElement | null>(null);
   const [showText, setShowText] = useState(false);
 
-  const { user, isUserAuthenticated } = useContext(UserContext);
-
-  console.log(user, isUserAuthenticated, "user");
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
     const animation = lottie.loadAnimation({

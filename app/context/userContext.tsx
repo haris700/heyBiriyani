@@ -57,17 +57,11 @@ export const UserContextProvider: React.FC<UserContextProviderProps> = ({
   };
 
   useEffect(() => {
-    console.log("again fetcheddd");
-
     const initializeUser = async () => {
       const token = localStorage.getItem("token");
 
-      console.log(token, "token");
-
       if (token) {
         const decodedToken = jwtTokenDecode(token);
-
-        console.log(decodedToken, "decode token");
 
         try {
           const userData = await axios.get(`/api/user/getUser`, {
@@ -98,8 +92,6 @@ export const UserContextProvider: React.FC<UserContextProviderProps> = ({
     setInitializedUser,
     isUserAuthenticated,
   };
-
-  console.log(isUserAuthenticated, "ssssss");
 
   return (
     <UserContext.Provider value={contextValue as IUserContext}>

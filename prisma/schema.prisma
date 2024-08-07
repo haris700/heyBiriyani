@@ -24,6 +24,7 @@ model User {
   verificationInfo Verification?
   lastLogin        DateTime      @default(now()) @map("last_login")
   orders           Order[]
+  cart             Cart[]
 
   @@map("user")
 }
@@ -52,20 +53,39 @@ model Rating {
 }
 
 model Order {
-  id         Int     @id @default(autoincrement())
-  uid        String  @unique @default(uuid())
-  itemId     Int     @map("item_id")
-  userId     Int     @map("user_id")
-  quantity   Int     @map("quantity")
-  unitPrice  Int     @map("unit_price")
-  totalPrice Float   @map("total_price")
-  status     String
-  name       String
-  user       User    @relation(fields: [userId], references: [id]) 
-  item       Item    @relation(fields: [itemId], references: [id])
-  rating     Rating?
+  id               Int     @id @default(autoincrement())
+  uid              String  @unique @default(uuid())
+  orderBatchId     String  @map("order_batch_id")
+  itemId           Int     @map("item_id")
+  userId           Int     @map("user_id")
+  quantity         Int     @map("quantity")
+  unitPrice        Int     @map("unit_price")
+  totalPrice       Float   @map("total_price")
+  status           String
+  paymentStatus    String  @map("payment_status")
+  razoPayOrderId   String? @map("razo_pay_order_id")
+  user             User    @relation(fields: [userId], references: [id]) 
+  item             Item    @relation(fields: [itemId], references: [id])
+  rating           Rating?
 
   @@map("order")
+}
+
+model Cart {
+  id         Int      @id @default(autoincrement())
+  userId     Int      @map("user_id")
+  itemId     Int      @map("item_id")
+  quantity   Int      @map("quantity")
+  unitPrice  Float    @map("unit_price")
+  totalPrice Float    @map("total_price")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+  user       User     @relation(fields: [userId], references: [id])
+  item       Item     @relation(fields: [itemId], references: [id])
+
+  @@unique([userId, itemId])
+
+  @@map("cart")
 }
 
 model Item {
@@ -75,6 +95,8 @@ model Item {
   price       Float
   ingredients String[]
   orders      Order[]
+  cart        Cart[]
+
 
   @@map("item")
 }

@@ -49,8 +49,6 @@ export default function SignUp() {
     event.preventDefault();
     setLoading(true);
 
-    console.log(form, "form");
-
     try {
       const res = await axios.post("/api/auth/register", form);
 
@@ -58,8 +56,6 @@ export default function SignUp() {
         const url = `/verify?email=${form.email}`; // Construct the URL string
         router.push(url);
       }
-
-      console.log(res, "ress");
     } catch (error: any) {
       setToastErrorMessage(error.message);
       setOpenToast(true);
@@ -70,8 +66,7 @@ export default function SignUp() {
   };
 
   const handleLoginRedirect = () => {
-    // Add your login redirection logic here
-    console.log("Redirect to login page");
+    router.push("/register");
   };
 
   return (
